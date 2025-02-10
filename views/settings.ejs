@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <%- include('partials/sidebar') %> <!-- Inclui a sidebar -->
+  <div class="content">
+    <div class="card">
+      <h2>Configurações do Perfil</h2>
+      <form action="/update-profile" method="POST" enctype="multipart/form-data">
+        <input type="text" name="name" placeholder="Novo Nome" value="<%= user.name %>">
+        <input type="email" name="email" placeholder="Novo Email" value="<%= user.email %>">
+        <input type="file" name="profileImage">
+        <button type="submit">Atualizar</button>
+      </form>
+    </div>
+  </div>
+  <%- include('partials/footer') %>
+</body>
+</html>

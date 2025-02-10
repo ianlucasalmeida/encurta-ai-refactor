@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Home</title>
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+  <%- include('partials/header') %>
+  <%- include('partials/sidebar') %>
+
+  <div class="content">
+    <div class="card">
+      <h2>Encurtar Link</h2>
+      <form action="/shorten" method="POST">
+        <input type="url" name="url" placeholder="Insira o link aqui" required>
+        <button type="submit">Encurtar</button>
+      </form>
+    </div>
+  </div>
+  <%- include('partials/footer') %>
+</body>
+</html>

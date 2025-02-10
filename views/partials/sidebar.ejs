@@ -1,0 +1,32 @@
+<div class="sidebar">
+  <div class="user-info">
+    <% if (typeof user !== "undefined" && user) { %>
+      <!-- Exibe a imagem do perfil se existir -->
+      <% if (user.profileImage) { %>
+        <img src="<%= user.profileImage %>" alt="Foto de Perfil" class="profile-image">
+      <% } else { %>
+        <!-- Placeholder para usuários sem imagem -->
+        <div class="placeholder-image"></div>
+      <% } %>
+      <span><%= user.name %></span>
+    <% } else { %>
+      <!-- Visitante (usuário não logado) -->
+      <div class="placeholder-image"></div>
+      <span>Visitante</span>
+    <% } %>
+  </div>
+  
+  <ul>
+    <li><a href="/home">Home</a></li>
+    <li><a href="/history">Histórico</a></li>
+    <li><a href="/settings">Configurações</a></li>
+  </ul>
+  
+  <div class="logout">
+    <% if (typeof user !== "undefined" && user) { %>
+      <button onclick="window.location.href='/logout'">Sair</button>
+    <% } else { %>
+      <button onclick="window.location.href='/login'">Entrar</button>
+    <% } %>
+  </div>
+</div>
