@@ -3,22 +3,52 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Home</title>
+  <title>Encurtador de Links Local</title>
   <link rel="stylesheet" href="/css/styles.css">
 </head>
 <body>
   <%- include('partials/header') %>
   <%- include('partials/sidebar') %>
-
   <div class="content">
     <div class="card">
       <h2>Encurtar Link</h2>
-      <form action="/shorten" method="POST">
-        <input type="url" name="url" placeholder="Insira o link aqui" required>
+      <form id="shorten-form">
+        <input type="url" id="url" name="url" placeholder="Insira o link aqui" required>
         <button type="submit">Encurtar</button>
       </form>
+      <div id="shortened-link" style="margin-top: 15px;"></div>
     </div>
   </div>
   <%- include('partials/footer') %>
+  <script src="encurtador.js"></script>
+  <script>
+    // Chamar a função de encurtamento ao enviar o formulário
+    document.getElementById('shorten-form').addEventListener('submit', function(event) {
+      event.preventDefault(); // Impede o recarregamento da página
+      const urlInput = document.getElementById('url').value.trim();
+      if (!urlInput) {
+        alert('Por favor, insira uma URL válida.');
+        return;
+      }
+      const shortUrl = encurtarLink(urlInput); // Chama a função de encurtamento
+      const shortenedLinkDiv = document.getElementById('shortened-link');
+      shortenedLinkDiv.innerHTML = `
+        <p>Link encurtado: 
+          <a href="${shortUrl}" target="_blank">${shortUrl}</a>
+        </p>
+      `;
+    });
+
+    // Redirecionar automaticamente se o usuário acessar um link encurtado
+    const hash = window.location.hash.substring(1); // Remove o '#'
+    if (hash) {
+      const originalUrl = obterUrlOriginal(hash); // Obtém a URL original pelo código
+      if (originalUrl) {
+        window.location.href = originalUrl;
+      } else {
+        alert('Link encurtado inválido.');
+      }
+    }
+  </script>
 </body>
 </html>
