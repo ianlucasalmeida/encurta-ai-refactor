@@ -3,19 +3,16 @@ const path = require('path');
 require('dotenv').config();
 const session = require('express-session');
 const multer = require('multer');
-const db = require('../config/db'); // Importação centralizada do banco de dados
+const db = require('../config/db');
 
 const app = express();
 
-// Configuração do EJS (Template Engine)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '../views'));
 
-// Middleware para processar dados do formulário
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-// Middleware de sessão
 app.use(
   session({
     secret: process.env.SESSION_SECRET || 'sua_chave_secreta',
@@ -29,7 +26,6 @@ app.use(
   })
 );
 
-// Configuração do Multer para upload de imagens
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join(__dirname, '../public/uploads'));
@@ -41,10 +37,8 @@ const storage = multer.diskStorage({
 });
 const upload = multer({ storage });
 
-// Middleware para servir arquivos estáticos
 app.use(express.static(path.join(__dirname, '../public')));
 
-// Middleware para carregar usuário autenticado em todas as views
 app.use(async (req, res, next) => {
   if (req.session.userId) {
     try {
@@ -61,13 +55,11 @@ app.use(async (req, res, next) => {
   next();
 });
 
-// Rotas
 const authRoutes = require('../routes/authRoutes');
 const urlRoutes = require('../routes/urlRoutes');
 app.use('/', authRoutes);
 app.use('/urls', urlRoutes);
 
-// Rota para upload de imagens e atualização de perfil
 app.post('/update-profile', upload.single('profileImage'), async (req, res) => {
   try {
     const userId = req.session.userId;
@@ -90,12 +82,10 @@ app.post('/update-profile', upload.single('profileImage'), async (req, res) => {
   }
 });
 
-// Rota de fallback para rotas inexistentes
 app.use((req, res) => {
   res.status(404).render('error', { message: 'Página não encontrada.' });
 });
 
-// Inicia o servidor
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Servidor rodando em http://localhost:${PORT}`);

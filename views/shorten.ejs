@@ -8,7 +8,7 @@
 </head>
 <body>
   <%- include('partials/header') %>
-  <%- include('partials/sidebar') %> <!-- Inclui a sidebar -->
+  <%- include('partials/sidebar') %> 
   <div class="content">
     <div class="card">
       <h2>Encurtar URL</h2>
@@ -18,7 +18,6 @@
       </form>
     </div>
 
-    <!-- Exibe a URL encurtada (se disponível) -->
     <% if (shortUrl) { %>
       <div class="card">
         <h3>Sua URL Encurtada:</h3>

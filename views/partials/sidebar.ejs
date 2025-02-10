@@ -5,13 +5,11 @@
         <% if (user.profileImage) { %>
           <img src="<%= user.profileImage %>" alt="Foto de Perfil" class="profile-image">
         <% } else { %>
-          <!-- Placeholder caso o usuário não tenha imagem -->
           <img src="/images/default-avatar.png" alt="Imagem padrão" class="profile-image">
         <% } %>
         <span class="user-name"><%= user.name %></span>
       </div>
     <% } else { %>
-      <!-- Caso o usuário não esteja logado -->
       <div class="profile-container">
         <img src="/images/default-avatar.png" alt="Imagem padrão" class="profile-image">
         <span class="user-name">Visitante</span>

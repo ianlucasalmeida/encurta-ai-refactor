@@ -1,13 +1,13 @@
 const Url = require('../models/Url');
 const Access = require('../models/Access');
 
-// Função para gerar um código curto aleatório
+
 function gerarCodigo() {
   const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   return Array.from({ length: 5 }, () => possible.charAt(Math.floor(Math.random() * possible.length))).join('');
 }
 
-// Função para encurtar um link
+
 exports.shortenUrl = async (req, res) => {
   const { url } = req.body;
   const userId = req.session.userId;
@@ -34,7 +34,6 @@ exports.shortenUrl = async (req, res) => {
   }
 };
 
-// Função para redirecionar um link encurtado
 exports.redirectToOriginal = async (req, res) => {
   const { code } = req.params;
 
@@ -54,7 +53,7 @@ exports.redirectToOriginal = async (req, res) => {
   }
 };
 
-// Função para listar o histórico de links do usuário
+
 exports.getHistory = async (req, res) => {
   const userId = req.session.userId;
 

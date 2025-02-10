@@ -2,24 +2,24 @@ const express = require('express');
 const multer = require('multer');
 const path = require('path');
 const router = express.Router();
-const { User } = require('../config/db'); // Importa o modelo User
+const { User } = require('../config/db'); 
 
-// Configuração do Multer para upload de imagens
+
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const uploadDir = path.join(__dirname, '../public/uploads'); // Pasta onde as imagens serão salvas
+    const uploadDir = path.join(__dirname, '../public/uploads');
     cb(null, uploadDir);
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    const ext = path.extname(file.originalname); // Extensão do arquivo
-    cb(null, uniqueSuffix + ext); // Nome único para o arquivo
+    const ext = path.extname(file.originalname); 
+    cb(null, uniqueSuffix + ext); 
   },
 });
 
 const upload = multer({
   storage,
-  limits: { fileSize: 2 * 1024 * 1024 }, // Limite de 2MB
+  limits: { fileSize: 2 * 1024 * 1024 }, 
   fileFilter: (req, file, cb) => {
     const allowedMimeTypes = ['image/jpeg', 'image/png', 'image/gif'];
     if (allowedMimeTypes.includes(file.mimetype)) {
@@ -30,10 +30,9 @@ const upload = multer({
   },
 }).single('profileImage');
 
-// Rota para exibir a página de configurações
 router.get('/settings', (req, res) => {
   if (!req.session.userId) {
-    return res.redirect('/login'); // Redireciona para a página de login se o usuário não estiver logado
+    return res.redirect('/login'); 
   }
   res.render('settings', {
     user: req.session.user,
@@ -42,7 +41,6 @@ router.get('/settings', (req, res) => {
   });
 });
 
-// Rota para atualizar o perfil do usuário
 router.post('/update-profile', async (req, res) => {
   const userId = req.session.userId;
   const { name, email } = req.body;
@@ -60,14 +58,12 @@ router.post('/update-profile', async (req, res) => {
     try {
       const updateData = { name, email };
 
-      // Se uma nova imagem foi enviada, atualiza o caminho da imagem
       if (req.file) {
         const profileImagePath = `/uploads/${req.file.filename}`;
         updateData.profileImage = profileImagePath;
-        req.session.user.profileImage = profileImagePath; // Atualiza a sessão
+        req.session.user.profileImage = profileImagePath; 
       }
 
-      // Atualiza os dados do usuário no banco de dados
       const [rowsUpdated] = await User.update(updateData, { where: { id: userId } });
 
       if (rowsUpdated === 0) {
@@ -78,7 +74,6 @@ router.post('/update-profile', async (req, res) => {
         });
       }
 
-      // Atualiza os dados na sessão
       req.session.user.name = name;
       req.session.user.email = email;
 
